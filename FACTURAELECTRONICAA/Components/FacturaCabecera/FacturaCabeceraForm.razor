@@ -1,0 +1,103 @@
+﻿@rendermode InteractiveServer
+@page "/facturaform/{Id:int?}"
+@using FACTURAELECTRONICAA.Models
+@inject BdFacturaContext _context
+@inject NavigationManager navigationManager
+
+<h3>@(Id.HasValue ? "Editar Factura" : "Nueva Factura")</h3>
+
+<EditForm Model="factura" OnValidSubmit="GuardarFactura">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label class="form-label">Número Factura:</label>
+        <InputText @bind-Value="factura.NumeroFactura" class="form-control" placeholder="Número de la factura" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">RUC:</label>
+        <InputText @bind-Value="factura.Ruc" class="form-control" placeholder="RUC del cliente" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Razón Social:</label>
+        <InputText @bind-Value="factura.RazonSocial" class="form-control" placeholder="Razón social" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Fecha de Vencimiento:</label>
+        <InputDate @bind-Value="factura.FechaVencimiento" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Dirección del Cliente:</label>
+        <InputText @bind-Value="factura.DireccionCliente" class="form-control" placeholder="Dirección del cliente" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Tipo de Moneda:</label>
+        <InputText @bind-Value="factura.TipoMoneda" class="form-control" placeholder="Tipo de moneda" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Forma de Pago:</label>
+        <InputSelect @bind-Value="factura.FormaPago" class="form-control">
+            <option value="" disabled selected>--Seleccionar--</option>
+            <option value="Contado">Contado</option>
+            <option value="Crédito">Crédito</option>
+        </InputSelect>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Observación:</label>
+        <InputText @bind-Value="factura.Observacion" class="form-control" placeholder="Observaciones" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
+
+@code {
+    private FacturaCabecera factura = new FacturaCabecera();
+
+    [Parameter] public int? Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id.HasValue)
+        {
+            factura = await _context.FacturaCabeceras.FindAsync(Id.Value);
+        }
+    }
+
+    async Task GuardarFactura()
+    {
+        DateOnly horaActualServidor = DateOnly.FromDateTime(DateTime.Now); 
+        factura.FechaEmision = horaActualServidor;
+
+        try
+        {
+            if (Id.HasValue)
+            {
+                _context.FacturaCabeceras.Update(factura);
+            }
+            else
+            {
+                _context.FacturaCabeceras.Add(factura);
+            }
+            await _context.SaveChangesAsync();
+            navigationManager.NavigateTo("/facturas");
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+
+    }
+
+    void Cancelar()
+    {
+        navigationManager.NavigateTo("/facturas");
+    }
+}

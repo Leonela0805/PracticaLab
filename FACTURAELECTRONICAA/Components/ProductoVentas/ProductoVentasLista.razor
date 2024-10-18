@@ -1,0 +1,71 @@
+﻿@rendermode InteractiveServer
+@page "/productos"
+@using Microsoft.EntityFrameworkCore
+@using FACTURAELECTRONICAA.Models
+@inject BdFacturaContext _context
+@inject NavigationManager navigationManager
+
+<h3>Lista de Productos</h3>
+
+<button class="btn btn-primary" @onclick="NuevoProducto">Nuevo Producto</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Unidad de Medida</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var producto in productos)
+        {
+            <tr>
+                <td>@producto.CodigoProducto</td>
+                <td>@producto.UnidadMedida</td>
+                <td>@producto.Nombre</td>
+                <td>@producto.Descripcion</td>
+                <td>@producto.Precio</td>
+                <td>@producto.Stock</td>
+                <td>
+                    <button class="btn btn-warning" @onclick="() => EditarProducto(producto.ProductoVentaId)">Editar</button>
+                    <button class="btn btn-danger" @onclick="() => EliminarProducto(producto.ProductoVentaId)">Eliminar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<ProductoVentum> productos = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        productos = await _context.ProductoVenta.ToListAsync();
+    }
+
+    void NuevoProducto()
+    {
+        navigationManager.NavigateTo("/productoform");
+    }
+
+    void EditarProducto(int id)
+    {
+        navigationManager.NavigateTo($"/productoform/{id}");
+    }
+
+    async Task EliminarProducto(int id)
+    {
+        var producto = await _context.ProductoVenta.FindAsync(id);
+        if (producto != null)
+        {
+            _context.ProductoVenta.Remove(producto);
+            await _context.SaveChangesAsync();
+            productos = await _context.ProductoVenta.ToListAsync();
+        }
+    }
+}

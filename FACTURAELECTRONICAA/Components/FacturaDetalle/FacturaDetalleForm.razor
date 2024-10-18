@@ -1,0 +1,181 @@
+﻿@rendermode InteractiveServer
+@page "/facturasdetalleform/{Id:int?}"
+@using FACTURAELECTRONICAA.Models
+@using Microsoft.EntityFrameworkCore
+@inject BdFacturaContext _context
+@inject NavigationManager navigationManager
+
+<h3>@(Id.HasValue ? "Editar Detalle de Factura" : "Nuevo Detalle de Factura")</h3>
+
+<EditForm Model="detalleFactura" OnValidSubmit="GuardarDetalleFactura">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label class="form-label">Producto:</label>
+        <InputSelect @bind-Value="detalleFactura.ProductoVentaId" @oninput="ObtenerPrecioProducto" class="form-control">
+            <option value="">Selecciona un Producto</option>
+            @foreach (var producto in productos)
+            {
+                <option value="@producto.ProductoVentaId">@producto.Nombre</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Cantidad:</label>
+        <InputNumber @bind-Value="detalleFactura.CantidaProducto" class="form-control" @oninput="ActualizarSubtotal" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Subtotal Ventas:</label>
+        <InputNumber @bind-Value="detalleFactura.SubTotalVentas" class="form-control" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Anticipos:</label>
+        <InputNumber @bind-Value="detalleFactura.Anticipos" class="form-control" @oninput="CalcularValorVenta" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Descuentos:</label>
+        <InputNumber @bind-Value="detalleFactura.Descuentos" class="form-control" @oninput="CalcularValorVenta" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Valor Venta:</label>
+        <InputNumber @bind-Value="detalleFactura.ValorVenta" class="form-control" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">IGV:</label>
+        <InputNumber @bind-Value="detalleFactura.Igv" class="form-control" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Total:</label>
+        <InputNumber @bind-Value="detalleFactura.Total" class="form-control" disabled />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
+
+@code {
+    private FacturaDetalle detalleFactura = new FacturaDetalle();
+    private List<FacturaCabecera> facturas = new();
+    private List<ProductoVentum> productos = new();
+
+    [Parameter] public int? Id { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "idfactura")]
+    public int idfactura { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        detalleFactura.FacturaId = idfactura;
+        facturas = await _context.FacturaCabeceras.ToListAsync();
+        productos = await _context.ProductoVenta.ToListAsync();
+
+        if (Id.HasValue)
+        {
+            detalleFactura = await _context.FacturaDetalles.FindAsync(Id.Value);
+        }
+    }
+
+    // Obtiene el precio del producto seleccionado y calcula el subtotal
+    private void ObtenerPrecioProducto(ChangeEventArgs evt)
+    {
+        if (int.TryParse(evt.Value.ToString(), out int productoId))
+        {
+            var producto = productos.FirstOrDefault(x => x.ProductoVentaId == productoId);
+            if (producto != null)
+            {
+                // Guardamos el precio del producto seleccionado y calculamos el subtotal
+                detalleFactura.SubTotalVentas = producto.Precio * (detalleFactura.CantidaProducto > 0 ? detalleFactura.CantidaProducto : 1);
+                CalcularValorVenta(); // Calcular el valor de venta después de actualizar el subtotal
+            }
+        }
+    }
+
+    // Recalcula el subtotal basado en la cantidad ingresada
+    private void ActualizarSubtotal(ChangeEventArgs evt)
+    {
+        if (int.TryParse(evt.Value.ToString(), out int cantidadIngresada))
+        {
+            var producto = productos.FirstOrDefault(x => x.ProductoVentaId == detalleFactura.ProductoVentaId);
+            if (producto != null)
+            {
+                // Calcular el Subtotal de acuerdo a la cantidad ingresada y el precio del producto
+                detalleFactura.SubTotalVentas = producto.Precio * cantidadIngresada;
+
+                // Calcular el Valor de Venta (Subtotal - Anticipos - Descuentos)
+                detalleFactura.ValorVenta = detalleFactura.SubTotalVentas - detalleFactura.Anticipos - detalleFactura.Descuentos;
+
+                // Asegurarse que el valor de venta no sea negativo
+                if (detalleFactura.ValorVenta < 0)
+                {
+                    detalleFactura.ValorVenta = 0;
+                }
+
+                // Calcular el IGV basado en el 18% del valor de venta
+                detalleFactura.Igv = Math.Round(detalleFactura.ValorVenta * 0.18m, 2); // Redondeamos a 2 decimales
+
+                // Calcular el Total (Valor de Venta + IGV)
+                detalleFactura.Total = detalleFactura.ValorVenta + detalleFactura.Igv;
+            }
+        }
+    }
+
+
+    // Calcula el valor de venta basado en el subtotal - anticipos - descuentos
+    private void CalcularValorVenta()
+    {
+        detalleFactura.ValorVenta = detalleFactura.SubTotalVentas - (detalleFactura.Anticipos + detalleFactura.Descuentos);
+
+        
+    }
+
+    
+
+
+    async Task GuardarDetalleFactura()
+    {
+        try
+        {
+            if (Id.HasValue) // Si el ID está presente, actualiza; de lo contrario, agrega nuevo
+            {
+                _context.FacturaDetalles.Update(detalleFactura);
+            }
+            else
+            {
+                _context.FacturaDetalles.Add(detalleFactura);
+            }
+
+            await _context.SaveChangesAsync(); // Guardar cambios en la base de datos
+
+            // Redirigir a la página de detalles de la factura usando el ID de la factura
+            navigationManager.NavigateTo($"/facturasdetalle?idfactura={detalleFactura.FacturaId}");
+        }
+        catch (DbUpdateException dbEx)
+        {
+            // Manejo específico de excepciones relacionadas con la base de datos
+            Console.WriteLine($"Error al guardar en la base de datos: {dbEx.Message}");
+            // Aquí podrías agregar lógica de reintento o mostrar un mensaje amigable al usuario
+        }
+        catch (Exception ex)
+        {
+            // Manejo general de excepciones
+            Console.WriteLine($"Error inesperado: {ex.Message}");
+            // Si es necesario, también podrías lanzar la excepción o mostrar un mensaje al usuario
+            throw; // Si prefieres lanzar la excepción después de loguearla
+        }
+    }
+
+
+    void Cancelar()
+    {
+        navigationManager.NavigateTo("/facturasdetalle");
+    }
+}

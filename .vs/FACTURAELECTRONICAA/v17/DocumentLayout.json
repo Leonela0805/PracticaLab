@@ -1,0 +1,75 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\51914\\Downloads\\FACTURAELECTRONICAA\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6E392090-B93D-4A9F-923C-10FA839F5B2C}|FACTURAELECTRONICAA\\FACTURAELECTRONICAA.csproj|c:\\users\\51914\\downloads\\facturaelectronicaa\\facturaelectronicaa\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6E392090-B93D-4A9F-923C-10FA839F5B2C}|FACTURAELECTRONICAA\\FACTURAELECTRONICAA.csproj|solutionrelative:facturaelectronicaa\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E392090-B93D-4A9F-923C-10FA839F5B2C}|FACTURAELECTRONICAA\\FACTURAELECTRONICAA.csproj|c:\\users\\51914\\downloads\\facturaelectronicaa\\facturaelectronicaa\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6E392090-B93D-4A9F-923C-10FA839F5B2C}|FACTURAELECTRONICAA\\FACTURAELECTRONICAA.csproj|solutionrelative:facturaelectronicaa\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E392090-B93D-4A9F-923C-10FA839F5B2C}|FACTURAELECTRONICAA\\FACTURAELECTRONICAA.csproj|c:\\users\\51914\\downloads\\facturaelectronicaa\\facturaelectronicaa\\components\\facturadetalle\\facturadetallelista.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6E392090-B93D-4A9F-923C-10FA839F5B2C}|FACTURAELECTRONICAA\\FACTURAELECTRONICAA.csproj|solutionrelative:facturaelectronicaa\\components\\facturadetalle\\facturadetallelista.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Home.razor",
+              "DocumentMoniker": "C:\\Users\\51914\\Downloads\\FACTURAELECTRONICAA\\FACTURAELECTRONICAA\\Components\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "FACTURAELECTRONICAA\\Components\\Pages\\Home.razor",
+              "ToolTip": "C:\\Users\\51914\\Downloads\\FACTURAELECTRONICAA\\FACTURAELECTRONICAA\\Components\\Pages\\Home.razor",
+              "RelativeToolTip": "FACTURAELECTRONICAA\\Components\\Pages\\Home.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-18T18:59:29.007Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FacturaDetalleLista.razor",
+              "DocumentMoniker": "C:\\Users\\51914\\Downloads\\FACTURAELECTRONICAA\\FACTURAELECTRONICAA\\Components\\FacturaDetalle\\FacturaDetalleLista.razor",
+              "RelativeDocumentMoniker": "FACTURAELECTRONICAA\\Components\\FacturaDetalle\\FacturaDetalleLista.razor",
+              "ToolTip": "C:\\Users\\51914\\Downloads\\FACTURAELECTRONICAA\\FACTURAELECTRONICAA\\Components\\FacturaDetalle\\FacturaDetalleLista.razor",
+              "RelativeToolTip": "FACTURAELECTRONICAA\\Components\\FacturaDetalle\\FacturaDetalleLista.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-18T13:56:48.048Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "C:\\Users\\51914\\Downloads\\FACTURAELECTRONICAA\\FACTURAELECTRONICAA\\Components\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "FACTURAELECTRONICAA\\Components\\Layout\\NavMenu.razor",
+              "ToolTip": "C:\\Users\\51914\\Downloads\\FACTURAELECTRONICAA\\FACTURAELECTRONICAA\\Components\\Layout\\NavMenu.razor*",
+              "RelativeToolTip": "FACTURAELECTRONICAA\\Components\\Layout\\NavMenu.razor*",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA4AAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-18T14:09:19.808Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

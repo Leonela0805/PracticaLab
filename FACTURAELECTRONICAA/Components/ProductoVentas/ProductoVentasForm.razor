@@ -1,0 +1,77 @@
+﻿@rendermode InteractiveServer
+@page "/productoform/{Id:int?}"
+@using FACTURAELECTRONICAA.Models
+@inject BdFacturaContext _context
+@inject NavigationManager navigationManager
+
+<h3>@(Id.HasValue ? "Editar Producto" : "Nuevo Producto")</h3>
+
+<EditForm Model="producto" OnValidSubmit="GuardarProducto">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label class="form-label">Nombre:</label>
+        <InputText @bind-Value="producto.Nombre" class="form-control" placeholder="Nombre del producto" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Descripción:</label>
+        <InputText @bind-Value="producto.Descripcion" class="form-control" placeholder="Descripción del producto" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Código Producto:</label>
+        <InputText @bind-Value="producto.CodigoProducto" class="form-control" placeholder="Código del producto" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Precio:</label>
+        <InputNumber @bind-Value="producto.Precio" class="form-control" placeholder="Precio del producto" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Unidad de Medida:</label>
+        <InputText @bind-Value="producto.UnidadMedida" class="form-control" placeholder="Unidad de medida" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Stock:</label>
+        <InputNumber @bind-Value="producto.Stock" class="form-control" placeholder="Cantidad en stock" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
+
+@code {
+    private ProductoVentum producto = new ProductoVentum();
+    [Parameter] public int? Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id.HasValue)
+        {
+            producto = await _context.ProductoVenta.FindAsync(Id.Value);
+        }
+    }
+
+    async Task GuardarProducto()
+    {
+        if (Id.HasValue)
+        {
+            _context.ProductoVenta.Update(producto);
+        }
+        else
+        {
+            _context.ProductoVenta.Add(producto);
+        }
+        await _context.SaveChangesAsync();
+        navigationManager.NavigateTo("/productos");
+    }
+
+    void Cancelar()
+    {
+        navigationManager.NavigateTo("/productos");
+    }
+}

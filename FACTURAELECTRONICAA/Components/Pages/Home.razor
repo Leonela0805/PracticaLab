@@ -1,0 +1,30 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Bienvenidos: Factura Electrónica</h1>
+
+<p>Selecciona una opción:</p>
+
+<div style="margin-top: 20px;">
+    <NavLink href="facturas">
+        <button class="btn btn-primary">
+            Ir a Lista de Facturas
+        </button>
+    </NavLink>
+</div>
+
+<div style="margin-top: 20px;">
+    <NavLink href="productos">
+        <button class="btn btn-secondary"> 
+            Ir a Lista de Productos
+        </button>
+    </NavLink>
+  
+</div>
+
+@code {
+    [Inject]
+    NavigationManager navigationManager { get; set; }
+
+}

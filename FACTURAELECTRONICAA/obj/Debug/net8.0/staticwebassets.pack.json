@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\51914\\Downloads\\FACTURAELECTRONICAA\\FACTURAELECTRONICAA\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\FACTURAELECTRONICAA.bundle.scp.css",
+      "PackagePath": "staticwebassets\\FACTURAELECTRONICAA.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\51914\\Downloads\\FACTURAELECTRONICAA\\FACTURAELECTRONICAA\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\51914\\Downloads\\FACTURAELECTRONICAA\\FACTURAELECTRONICAA\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\51914\\Downloads\\FACTURAELECTRONICAA\\FACTURAELECTRONICAA\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\51914\\Downloads\\FACTURAELECTRONICAA\\FACTURAELECTRONICAA\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.FACTURAELECTRONICAA.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.FACTURAELECTRONICAA.props",
+      "PackagePath": "build\\FACTURAELECTRONICAA.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.FACTURAELECTRONICAA.props",
+      "PackagePath": "buildMultiTargeting\\FACTURAELECTRONICAA.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.FACTURAELECTRONICAA.props",
+      "PackagePath": "buildTransitive\\FACTURAELECTRONICAA.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

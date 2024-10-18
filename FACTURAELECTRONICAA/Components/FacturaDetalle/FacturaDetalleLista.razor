@@ -1,0 +1,232 @@
+﻿@rendermode InteractiveServer
+@page "/facturasdetalle"
+@using FACTURAELECTRONICAA.Models
+@using Microsoft.EntityFrameworkCore
+@inject BdFacturaContext _context
+@inject NavigationManager navigationManager
+
+
+<div style="display: flex; border: 2px solid black;">
+    <div style="flex: 2; padding-right: 20px;">
+        <p style="margin: 0; font-weight: bold;">NOTICIERO CONTABLE</p>
+        <p style="margin: 0; font-weight: bold;">NOTICIERO CONTABLE S.A.C.</p>
+        <p style="margin: 0;">CAL. MARTIN OLAYA 129 DPTO. 1107 ALT CDRA. 01 DE AV. PARDO</p>
+        <p style="margin: 0;">MIRAFLORES - LIMA - LIMA</p>
+    </div>
+
+    <div style="border: 1px solid black;flex: 1;">
+        <table style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>Factura Electrónica</th>
+                </tr>
+                <tr>
+                    <th>RUC: 205561106909</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detalle in facturasCabecera)
+                {
+                    <tr>
+                        <td>@detalle.NumeroFactura</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="display: flex; border: 2px solid black;">
+    <div style="flex: 2;">
+        <table style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>Fecha de Vencimiento</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var factura in facturasCabecera)
+                {
+                    <tr>
+                        <td>@factura.FechaVencimiento</td>
+                    </tr>
+                }
+            </tbody>
+            <thead>
+                <tr>
+                    <th>Fecha de Emisión</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var factura in facturasCabecera)
+                {
+                    <tr>
+                        <td>@factura.FechaEmision</td>
+                    </tr>
+                }
+            </tbody>
+            <thead>                
+                <tr>
+                    <th>Señor(es)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var factura in facturasCabecera)
+                {
+                    <tr>
+                        <td>@factura.RazonSocial</td>
+                    </tr>
+                }
+            </tbody>
+            <thead>               
+                <tr>
+                    <th>RUC</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var factura in facturasCabecera)
+                {
+                    <tr>
+                        <td>@factura.Ruc</td>
+                    </tr>                    
+                }
+            </tbody>
+        </table>
+    </div>
+    <div style="flex: 2;">
+        <table style="width: 100%;">
+    
+            <thead>                
+                <tr>
+                    <th>Dirección del cliente</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var factura in facturasCabecera)
+                {
+                    <tr>
+                        <td>@factura.DireccionCliente</td>
+                    </tr>
+                }
+            </tbody>
+            <thead>
+                <tr>
+                    <th>Tipo de moneda</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var factura in facturasCabecera)
+                {
+                    <tr>
+                        <td>@factura.TipoMoneda</td>
+                    </tr>
+                }
+            </tbody>
+            <thead>                
+                <tr>
+                    <th>Forma de Pago</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var factura in facturasCabecera)
+                {
+                    <tr>
+                        <td>@factura.FormaPago</td>
+                    </tr>
+                }
+            </tbody>
+            <thead>
+                <tr>
+                    <th>Observación</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var factura in facturasCabecera)
+                {
+                    <tr>
+                        <td>@factura.Observacion</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="display: flex; border: 2px solid black;">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Subtotal Ventas</th>
+                <th>Anticipos</th>
+                <th>Descuentos</th>
+                <th>Valor Venta</th>
+                <th>IGV</th>
+                <th>Total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detalle in detallesFactura)
+            {
+                <tr>
+                    <td>@detalle.ProductoVenta.Nombre</td>
+                    <td>@detalle.CantidaProducto</td>
+                    <td>@detalle.SubTotalVentas</td>
+                    <td>@detalle.Anticipos</td>
+                    <td>@detalle.Descuentos</td>
+                    <td>@detalle.ValorVenta</td>
+                    <td>@detalle.Igv</td>
+                    <td>@detalle.Total</td>
+                    <td>
+                        <button class="btn btn-warning" @onclick="() => EditarDetalle(detalle.DetalleId)">Editar</button>
+                        <button class="btn btn-danger" @onclick="() => EliminarDetalle(detalle.DetalleId)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div> 
+
+<button class="btn btn-primary" @onclick="() => NuevoDetalleFactura(idfactura)">Nuevo Detalle</button>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "idfactura")]
+    public int idfactura { get; set; }
+
+    private List<FacturaDetalle> detallesFactura = new();
+    private List<FacturaCabecera> facturasCabecera = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Carga de detalles de la factura, incluyendo el producto relacionado
+        detallesFactura = await _context.FacturaDetalles.Include(d => d.ProductoVenta).Where(d => d.FacturaId == idfactura).ToListAsync();
+
+        // Carga de la cabecera de factura basada en el idfactura
+        facturasCabecera = await _context.FacturaCabeceras.Where(f => f.FacturaId == idfactura).ToListAsync();
+    }
+
+
+    void NuevoDetalleFactura(int idfactura)
+    {
+        navigationManager.NavigateTo($"/facturasdetalleform?idfactura={idfactura}");
+    }
+
+    void EditarDetalle(int id)
+    {
+        navigationManager.NavigateTo($"/facturasdetalleform/{id}");
+    }
+
+    async Task EliminarDetalle(int id)
+    {
+        var detalle = await _context.FacturaDetalles.FindAsync(id);
+        if (detalle != null)
+        {
+            _context.FacturaDetalles.Remove(detalle);
+            await _context.SaveChangesAsync();
+            detallesFactura = await _context.FacturaDetalles.Include(d => d.ProductoVenta).Where(d => d.FacturaId == idfactura).ToListAsync();
+        }
+    }
+}
